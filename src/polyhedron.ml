@@ -750,7 +750,12 @@ let factor polyhedron =
 
 let integer_hull ?(decompose=true) how =
   Log.time "Integer hull" (fun p ->
-      if decompose then
+      (* The empty polyhedron is represented by the constant contradiction
+         1 = 0, and its integer hull is empty. Handle it before factor, which
+         assumes each constraint has a variable and otherwise pops an empty
+         vector after removing the constant term. *)
+      if P.is_bottom p then bottom
+      else if decompose then
         List.fold_left
           (fun rest factor -> meet rest (integer_hull how factor))
           top
