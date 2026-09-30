@@ -20,9 +20,7 @@
  (depends
    (ctypes (and :build (>= 0.22.0)))
    (ctypes-foreign (and :build (>= 0.22.0)))
-   (ppx_cstubs :build)
  )
  (depopts
    (zarith :build)
  ))
-

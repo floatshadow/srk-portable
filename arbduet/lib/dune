@@ -8,9 +8,9 @@
  (foreign_stubs
   (language c)
   (names arb_stub)
-  (flags :standard -lflint -lflint-arb -lgmp -lstdc++ -w)
+  (flags :standard -lflint -lgmp -lstdc++ -w)
  )
-  (c_library_flags :standard -lflint -lflint-arb -lgmp)
+  (c_library_flags :standard -lflint -lgmp)
 )
 
 ;Optional library which gives more direct translations from zarith types
@@ -18,10 +18,11 @@
 (library
  (name arbduet_zarith)
  (public_name arbduet.zarith)
- (libraries ctypes ppx_cstubs arbduet zarith)
+ (libraries ctypes arbduet zarith)
  (foreign_stubs
    (language c)
    (names zarith_bind_stubs)
+   (include_dirs (lib zarith))
    (flags :standard -lgmp)
  )
  (modules arbduet_zarith zarith_bind)
@@ -52,7 +53,3 @@
 )
 
 ;Generate the stub code for arb_zarith
-(rule
-  (targets zarith_bind.ml zarith_bind_stubs.c)
-  (deps zarith_bind.c.ml)
-  (action (run %{bin:ppx_cstubs} -I %{lib:zarith:.} zarith_bind.c.ml -o %{targets})))

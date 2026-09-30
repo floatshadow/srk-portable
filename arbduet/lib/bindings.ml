@@ -9,7 +9,7 @@ module Bindings (F : FOREIGN) = struct
   (*Types and functions from gmp.h*)
   let mp_limb_t = ptr uint
   type mpz_struct
-  let mpz_struct : mpz_struct structure typ = structure "__mpz_struct"
+  let mpz_struct : mpz_struct structure typ = typedef (structure "__mpz_struct") "__mpz_struct"
   let mp_alloc = field mpz_struct "_mp_alloc" int
   let mp_size = field mpz_struct "_mp_size" int
   let mp_d = field mpz_struct "_mp_d" (ptr mp_limb_t)
@@ -59,7 +59,7 @@ module Bindings (F : FOREIGN) = struct
 
   (*Types and functions from fmpq.h*)
   type fmpq
-  let fmpq : fmpq structure typ = structure "fmpq"
+  let fmpq : fmpq structure typ = typedef (structure "fmpq") "fmpq"
   let num = field fmpq "num" fmpz
   let den = field fmpq "den" fmpz
   let () = seal fmpq
@@ -90,7 +90,7 @@ module Bindings (F : FOREIGN) = struct
   let ptr_ms = field mantissa_struct "ptr" mantissa_ptr_struct
   let () = seal mantissa_struct
   type arf_struct
-  let arf_struct : arf_struct structure typ = structure "arf_struct"
+  let arf_struct : arf_struct structure typ = typedef (structure "arf_struct") "arf_struct"
   let exp_as = field arf_struct "exp" fmpz
   let size_as = field arf_struct "size" mp_size_t
   let d_as = field arf_struct "d" mantissa_struct
@@ -106,7 +106,7 @@ module Bindings (F : FOREIGN) = struct
 
   (*Types and functions from mag.h*)
   type mag_struct
-  let mag_struct : mag_struct structure typ = structure "mag_struct"
+  let mag_struct : mag_struct structure typ = typedef (structure "mag_struct") "mag_struct"
   type mag_t = mag_struct structure ptr
   let mag_t : mag_t typ = ptr mag_struct
   let exp_mags = field mag_struct "exp" fmpz
@@ -118,7 +118,7 @@ module Bindings (F : FOREIGN) = struct
 
   (*Types and functions from arb.h*)
   type arb_struct
-  let arb_struct : arb_struct structure typ = structure "arb_struct"
+  let arb_struct : arb_struct structure typ = typedef (structure "arb_struct") "arb_struct"
   let mid_arbs = field arb_struct "mid" arf_struct
   let rad_arbs = field arb_struct "rad" mag_struct
   let () = seal arb_struct
@@ -136,7 +136,7 @@ module Bindings (F : FOREIGN) = struct
 
   (*Types and functions from acb.h*)
   type acb_struct
-  let acb_struct : acb_struct structure typ = structure "acb_struct"
+  let acb_struct : acb_struct structure typ = typedef (structure "acb_struct") "acb_struct"
   let real = field acb_struct "real" arb_struct
   let imag = field acb_struct "imag" arb_struct
   let () = seal acb_struct
@@ -173,7 +173,7 @@ module Bindings (F : FOREIGN) = struct
 
   (*Types and functions from flint/fmpz_poly.h*)
   type fmpz_poly_struct
-  let fmpz_poly_struct : fmpz_poly_struct structure typ = structure "fmpz_poly_struct"
+  let fmpz_poly_struct : fmpz_poly_struct structure typ = typedef (structure "fmpz_poly_struct") "fmpz_poly_struct"
   let coefs = field fmpz_poly_struct "coeffs" fmpz_t
   let alloc_fmpz_poly = field fmpz_poly_struct "alloc" long
   let length = field fmpz_poly_struct "length" long
@@ -192,7 +192,7 @@ module Bindings (F : FOREIGN) = struct
 
   (*Types and functions from fmpz_mat.h*)
   type fmpz_mat_struct
-  let fmpz_mat_struct : fmpz_mat_struct structure typ = structure "fmpz_mat_struct"
+  let fmpz_mat_struct : fmpz_mat_struct structure typ = typedef (structure "fmpz_mat_struct") "fmpz_mat_struct"
   let entries = field fmpz_mat_struct "entries" (ptr fmpz)
   let r = field fmpz_mat_struct "r" long
   let c = field fmpz_mat_struct "c" long
