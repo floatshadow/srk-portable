@@ -18,6 +18,7 @@
     ntl
     ocamlgraph
     normalizffi
+    flint
     faugere
     arbduet
     (menhir :build)

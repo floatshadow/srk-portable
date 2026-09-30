@@ -23,6 +23,7 @@
     ntl
     ocamlgraph
     normalizffi
+    flint
     faugere
     faugere.zarith
     arbduet

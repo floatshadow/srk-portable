@@ -95,28 +95,17 @@ let sparsify ctxt arr =
    ZZ L = (1/d) ZZ (d L) = (1/d) ZZ B = ZZ (1/d B).
  *)
 let dense_hermite_normal_form matrix =
-  let open Arbduet in
-  let open Arbduet_zarith in
-  let rows = List.length matrix in
-  let cols = match matrix with [] -> 0 | row::_ -> List.length row in
-  let mat = Fmpz_mat.init rows cols in
-  Fun.protect ~finally:(fun () -> Fmpz_mat.clear mat) (fun () ->
-      List.iteri (fun i row ->
-          List.iteri (fun j entry ->
-              let entry = Fmpzz.zarith_to_fmpz (ZZ.of_mpz entry) in
-              Fun.protect ~finally:(fun () -> Fmpz.clear entry)
-                (fun () -> Fmpz_mat.set_entry mat entry i j))
-            row)
-        matrix;
-      let hnf = Fmpz_mat.hnf mat in
-      Fun.protect ~finally:(fun () -> Fmpz_mat.clear hnf) (fun () ->
-          List.init rows (fun i ->
-              List.init cols (fun j ->
-                  let entry = Fmpz_mat.get_entry hnf i j in
-                  Fun.protect ~finally:(fun () -> Fmpz.clear entry)
-                    (fun () -> Fmpzz.fmpz_to_zarith entry)))
-          |> List.filter (List.exists (fun entry -> not (ZZ.equal entry ZZ.zero)))
-          |> List.map (List.map ZZ.mpz_of)))
+  (* Normalizffi removed its Flint wrapper. Use the mpoly binding to the same
+     FLINT row-HNF operation, retaining the first rank rows as before. *)
+  let matrix = Array.of_list (List.map Array.of_list matrix) in
+  let rows = Array.length matrix in
+  let columns = if rows = 0 then 0 else Array.length matrix.(0) in
+  let mat = Flint.FMPZ_mat.init ~rows ~columns
+      (fun i j -> ZZ.of_mpz matrix.(i).(j)) in
+  let mat = Flint.FMPZ_mat.hnf mat in
+  let rank = Flint.FMPZ_mat.rank mat in
+  List.init rank (fun i ->
+      List.init columns (fun j -> ZZ.mpz_of (Flint.FMPZ_mat.entry mat i j)))
 
 let hermite_normal_form ctxt matrix =
   let densified =

@@ -43,10 +43,11 @@ sudo apt-get install build-essential autoconf automake libtool pkg-config python
 
 The `ntl/`, `faugere/`, and `arbduet/` directories contain the imported
 bindings. Arb uses FLINT 3, which includes Arb in `libflint`. The local
-`opam/` repository supplies the NTL system-library probe and a pinned
-Normaliz binding; other packages come from the standard opam repository.
-Normaliz's upstream build compiles its bundled native dependencies, so its
-first installation can take some time.
+`opam/` repository supplies the NTL system-library probe, Kincaid's `mpoly`
+FLINT bindings, and Normalizffi, each pinned where applicable. Other packages
+come from the standard opam repository. The Normalizffi recipe builds the
+native Normaliz library against system FLINT 3, MPFR, and GMP; it does not
+build the bundled copies of those dependencies.
 
 From this directory, with the intended switch selected:
 
