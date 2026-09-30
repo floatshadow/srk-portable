@@ -10,8 +10,12 @@ homepage: "https://github.com/nclskoh/normalizffi"
 bug-reports: "https://github.com/nclskoh/normalizffi/issues"
 depends: [
   "ocaml" {>= "4.09"}
-  "dune" {>= "2.9" & >= "2.9.1"}
+  "dune" {>= "3.7"}
   "odoc" {with-doc}
+  "ctypes" {>= "0.20.1"}
+  "ctypes-foreign" {>= "0.18.0"}
+  "mlgmpidl"
+  "ounit2" {build}
 ]
 build: [
   [make]
@@ -32,5 +36,5 @@ build: [
 ]
 dev-repo: "git+https://github.com/nclskoh/normalizffi.git"
 url {
-  src: "git+https://github.com/nclskoh/normalizffi.git"
+  src: "git+https://github.com/nclskoh/normalizffi.git#6a02e0dc8c81710455b3a9852b75b60a5ad72655"
 }
