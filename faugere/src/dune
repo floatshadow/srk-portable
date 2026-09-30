@@ -30,7 +30,7 @@
   (names fgb_stub)
   (flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp -fopenmp -w)
  )
-  (c_library_flags :standard -Lsrc -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
+  (c_library_flags :standard -Lsrc -Lfaugere/src -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
 )
 
 (rule
