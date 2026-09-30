@@ -6,7 +6,7 @@ depends: [
   "dune" {>= "2.0"}
   "batteries"
   "ppx_deriving"
-  "gmp"
+  "mlgmpidl"
   "camlidl"
   "apron"
   "zarith"
@@ -16,6 +16,8 @@ depends: [
   "normalizffi"
   "faugere"
   "arbduet"
+  "menhir" {build}
+  "ounit" {with-test}
 ]
 build: [
   ["dune" "subst"] {pinned}

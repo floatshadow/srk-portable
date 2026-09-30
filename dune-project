@@ -10,7 +10,7 @@
   (depends
     batteries
     ppx_deriving
-    gmp
+    mlgmpidl
     camlidl
     apron
     zarith
@@ -20,4 +20,6 @@
     normalizffi
     faugere
     arbduet
+    (menhir :build)
+    (ounit :with-test)
     ))

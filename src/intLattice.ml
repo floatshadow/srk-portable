@@ -1,4 +1,3 @@
-open Normalizffi
 open BatPervasives
 
 module L = Log.Make(struct let name = "srk.intLattice" end)
@@ -96,19 +95,28 @@ let sparsify ctxt arr =
    ZZ L = (1/d) ZZ (d L) = (1/d) ZZ B = ZZ (1/d B).
  *)
 let dense_hermite_normal_form matrix =
-  let level = `trace in
-  let verbose = Log.level_leq (!L.my_verbosity_level) level in
-  if verbose then Flint.set_debug true else ();
-  let mat = Flint.new_matrix matrix in
-  Flint.hermitize mat;
-  let rank = Flint.rank mat in
-  let basis =
-    Flint.denom_matrix_of_rational_matrix mat
-    |> snd
-    |> BatList.take rank (* The rows after rank should be all zeros *)
-  in
-  if verbose then Flint.set_debug false;
-  basis
+  let open Arbduet in
+  let open Arbduet_zarith in
+  let rows = List.length matrix in
+  let cols = match matrix with [] -> 0 | row::_ -> List.length row in
+  let mat = Fmpz_mat.init rows cols in
+  Fun.protect ~finally:(fun () -> Fmpz_mat.clear mat) (fun () ->
+      List.iteri (fun i row ->
+          List.iteri (fun j entry ->
+              let entry = Fmpzz.zarith_to_fmpz (ZZ.of_mpz entry) in
+              Fun.protect ~finally:(fun () -> Fmpz.clear entry)
+                (fun () -> Fmpz_mat.set_entry mat entry i j))
+            row)
+        matrix;
+      let hnf = Fmpz_mat.hnf mat in
+      Fun.protect ~finally:(fun () -> Fmpz_mat.clear hnf) (fun () ->
+          List.init rows (fun i ->
+              List.init cols (fun j ->
+                  let entry = Fmpz_mat.get_entry hnf i j in
+                  Fun.protect ~finally:(fun () -> Fmpz.clear entry)
+                    (fun () -> Fmpzz.fmpz_to_zarith entry)))
+          |> List.filter (List.exists (fun entry -> not (ZZ.equal entry ZZ.zero)))
+          |> List.map (List.map ZZ.mpz_of)))
 
 let hermite_normal_form ctxt matrix =
   let densified =

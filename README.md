@@ -33,30 +33,32 @@ Building
 
 ### Dependencies
 
-Srk depends on several software packages.  The following dependencies need to be installed manually.
+Use an opam switch with OCaml 5.5 and a native compiler. On Debian, the
+system dependencies are:
 
- + [opam](http://opam.ocaml.org) (with OCaml >= 4.08 & native compiler)
-   - If you have an older version of opam installed, you can install opam2 using `opam install opam-devel`
- + [GMP and MPFR](https://gmplib.org/)
- + [NTL](http://www.shoup.net/ntl/)
- + Python 2.7
-
-On Ubuntu, you can install these packages with:
-```
- sudo apt-get install opam libgmp-dev libmpfr-dev libntl-dev python2.7
+```sh
+sudo apt-get install build-essential autoconf automake libtool pkg-config python3 \
+  libgmp-dev libmpfr-dev libntl-dev libflint-dev libffi-dev
 ```
 
-On MacOS, you can install these packages with:
-```
- brew install opam gmp mpfr ntl python@2
+The `ntl/`, `faugere/`, and `arbduet/` directories contain the imported
+bindings. Arb uses FLINT 3, which includes Arb in `libflint`. The local
+`opam/` repository supplies the NTL system-library probe and a pinned
+Normaliz binding; other packages come from the standard opam repository.
+Normaliz's upstream build compiles its bundled native dependencies, so its
+first installation can take some time.
+
+From this directory, with the intended switch selected:
+
+```sh
+opam repository add srk-local "$PWD/opam" --this-switch
+opam install ./ntl ./faugere ./arbduet ./srk.opam --with-test
+eval "$(opam env)"
 ```
 
-Next, add the [sv-opam](https://github.com/zkincaid/sv-opam) OPAM repository, and install the rest of duet's dependencies.  These are built from source, so grab a coffee &mdash; this may take a long time.
-```
- opam remote add sv git://github.com/zkincaid/sv-opam.git#modern
-
- opam install ocamlgraph batteries ppx_deriving z3 apron ounit menhir ntl
-```
+This installs SRK and runs the existing package tests. The migration's
+starter commit records the upstream revisions; subsequent commits describe
+the compatibility fixes for each package.
 
 ### Building srk
 
