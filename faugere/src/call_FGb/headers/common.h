@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <caml/fail.h>
 #include "style.h"
 #include "gmp.h"
 

@@ -11,7 +11,6 @@ depends: [
   "dune" {>= "2.9"}
   "ctypes" {build & >= "0.22.0"}
   "ctypes-foreign" {build & >= "0.22.0"}
-  "ppx_cstubs" {build}
   "odoc" {with-doc}
 ]
 depopts: [

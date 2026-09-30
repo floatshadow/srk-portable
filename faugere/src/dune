@@ -79,18 +79,14 @@
 (library
  (name faugere_zarith)
  (public_name faugere.zarith)
- (libraries ctypes ppx_cstubs faugere zarith)
+ (libraries ctypes faugere zarith)
  (foreign_stubs
    (language c)
    (names zarith_bind_stubs)
+   (include_dirs (lib zarith))
    (flags :standard -lgmp)
  )
  (modules faugere_zarith zarith_bind)
  (synopsis "Faugere with zarith bindings")
  (optional)
 )
-
-(rule
-  (targets zarith_bind.ml zarith_bind_stubs.c)
-  (deps zarith_bind.c.ml)
-  (action (run %{bin:ppx_cstubs} -I %{lib:zarith:.} zarith_bind.c.ml -o %{targets})))

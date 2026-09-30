@@ -20,7 +20,7 @@ module Bindings (F : FOREIGN) = struct
   let mp_limb_t = ptr uint
 
   type mpz_struct
-  let mpz_struct : mpz_struct structure typ = structure "__mpz_struct"
+  let mpz_struct : mpz_struct structure typ = typedef (structure "__mpz_struct") "__mpz_struct"
   let mp_alloc = field mpz_struct "_mp_alloc" int
   let mp_size = field mpz_struct "_mp_size" int
   let mp_d = field mpz_struct "_mp_d" (ptr mp_limb_t)
@@ -42,7 +42,7 @@ module Bindings (F : FOREIGN) = struct
   let mpz_export = foreign "mpz_export" (ptr void @-> ptr PosixTypes.size_t @-> int @-> PosixTypes.size_t @-> int @-> PosixTypes.size_t @-> mpz_srcptr @-> returning (ptr void))
 
   type sfgb_comp_desc
-  let sfgb_comp_desc : sfgb_comp_desc structure typ = structure "SFGB_Comp_Desc"
+  let sfgb_comp_desc : sfgb_comp_desc structure typ = structure "sFGB_Comp_Desc"
   let compute = field sfgb_comp_desc "_compute" i32
   let nb = field sfgb_comp_desc "_nb" i32
   let force_elim = field sfgb_comp_desc "_force_elim" i32
@@ -61,7 +61,7 @@ module Bindings (F : FOREIGN) = struct
   let fgb_comp_desc = ptr sfgb_comp_desc
 
   type sfgb_options
-  let sfgb_options : sfgb_options structure typ = structure "SFGB_Options"
+  let sfgb_options : sfgb_options structure typ = structure "sFGB_Options"
   let env = field sfgb_options "_env" sfgb_comp_desc
   let mini = field sfgb_options "_mini" bool
   let elim = field sfgb_options "_elim" ui32
@@ -74,6 +74,8 @@ module Bindings (F : FOREIGN) = struct
   let fgb_options = ptr sfgb_options
 
   let threads_fgb = foreign "threads_FGb" (int @-> returning void)
+
+  let mutable_string = typedef string "char *"
 
   (*----------------------------------Integer functions----------------------------------*)
 
@@ -89,7 +91,7 @@ module Bindings (F : FOREIGN) = struct
 
   let assign_expos_int = foreign "FGb_int_assign_expos" (ptr i32 @-> i32 @-> returning expos)
 
-  let reset_expos_int = foreign "FGb_int_reset_expos" (ui32 @-> ui32 @-> ptr string @-> returning void)
+  let reset_expos_int = foreign "FGb_int_reset_expos" (ui32 @-> ui32 @-> ptr mutable_string @-> returning void)
 
   let reset_coeffs_int = foreign "FGb_int_reset_coeffs" (ui32 @-> returning void)
 
@@ -123,7 +125,7 @@ module Bindings (F : FOREIGN) = struct
 
   let init_integers = foreign "init_FGb_Integers" (void @-> returning void)
 
-  let power_set_int = foreign "FGb_int_PowerSet" (ui32 @-> ui32 @-> ptr string @-> returning void)
+  let power_set_int = foreign "FGb_int_PowerSet" (ui32 @-> ui32 @-> ptr mutable_string @-> returning void)
   
   let fgb_int = foreign "FGb_int_fgb" (ptr dpol @-> ui32 @-> ptr dpol @-> ui32 @-> ptr double @-> fgb_options @-> returning ui32)
 
@@ -142,7 +144,7 @@ module Bindings (F : FOREIGN) = struct
 
   let assign_expos = foreign "FGb_assign_expos" (ptr i32 @-> i32 @-> returning expos)
 
-  let reset_expos = foreign "FGb_reset_expos" (ui32 @-> ui32 @-> ptr string @-> returning void)
+  let reset_expos = foreign "FGb_reset_expos" (ui32 @-> ui32 @-> ptr mutable_string @-> returning void)
 
   let reset_coeffs = foreign "FGb_reset_coeffs" (ui32 @-> ptr ui32 @-> returning void)
 
@@ -172,7 +174,7 @@ module Bindings (F : FOREIGN) = struct
 
   let init_modp = foreign "init_FGb_Modp" (int @-> returning void)
 
-  let power_set = foreign "FGb_PowerSet" (ui32 @-> ui32 @-> ptr string @-> returning void)
+  let power_set = foreign "FGb_PowerSet" (ui32 @-> ui32 @-> ptr mutable_string @-> returning void)
   
   let fgb = foreign "FGb_fgb" (ptr dpol @-> ui32 @-> ptr dpol @-> ui32 @-> ptr double @-> fgb_options @-> returning ui32)
 
