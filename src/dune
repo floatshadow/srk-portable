@@ -1,0 +1,46 @@
+(rule
+  (target link_flags.sexp)
+  (action (write-file link_flags.sexp "(-cclib -Wl,-keep_dwarf_unwind)"))
+  (enabled_if (= %{ocaml-config:system} macosx)))
+
+(rule
+  (target link_flags.sexp)
+  (action (write-file link_flags.sexp "()"))
+  (enabled_if (<> %{ocaml-config:system} macosx)))
+
+(library
+  (public_name srk)
+  (modules (:standard \ bigtop))
+  (modes native)
+  (libraries
+    batteries
+    ppx_deriving ppx_deriving.show ppx_deriving.ord ppx_deriving.eq
+    gmp
+    camlidl
+    apron apron.boxMPQ apron.octMPQ apron.polkaMPQ
+    zarith
+    z3
+    ntl
+    ocamlgraph
+    normalizffi
+    faugere
+    faugere.zarith
+    arbduet
+    arbduet.zarith
+    )
+  (preprocess (pps ppx_deriving.ord ppx_deriving.eq ppx_deriving.show)))
+
+(executable
+  (name bigtop)
+  (modules bigtop)
+  (modes native)
+  (promote (until-clean) (into ..))
+  (link_flags (:standard) (:include link_flags.sexp))
+  (libraries srk oUnit apron apron.boxMPQ apron.octMPQ apron.polkaMPQ zarith)
+  (preprocess (pps ppx_deriving.ord ppx_deriving.eq ppx_deriving.show)))
+
+(ocamllex
+  (modules srkLex srkSmtlib2Lex))
+
+(menhir
+  (modules srkParse srkSmtlib2Parse))

@@ -1,0 +1,6 @@
+(executable
+  (name example)
+  (modules example)
+  (libraries faugere)
+  (promote (until-clean))
+)

@@ -1,0 +1,9 @@
+opam-version: "2.0"
+maintainer: "zkincaid@gmail.com"
+homepage: "http://www.shoup.net/ntl/"
+build: [
+  ["sh" "-exc" "g++ -c $CFLAGS -std=c++11 test.c"]
+]
+synopsis: "Virtual package relying on a NTL system installation."
+description: "This package can only install if NTL is installed on the system."
+flags: conf

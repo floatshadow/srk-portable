@@ -1,0 +1,6 @@
+/_opam
+/_build/
+/.serena/
+**/_build/
+/bigtop.exe
+*.install
